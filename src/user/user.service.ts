@@ -1,27 +1,31 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { users } from 'src/database';
-import { User } from 'src/types';
+import { InjectModel } from '@nestjs/sequelize';
+import { User } from 'src/database/models/user.entity';
+import { CreateUser, UserResponse } from 'src/types/Dtos/User.dto';
 
 @Injectable()
 export class UserService {
-    findAll(): User[] {
-        return users;
-    };
+  constructor(
+    @InjectModel(User)
+    private userRepository: typeof User,
+  ) { }
 
-    createUser(): User[] {
-        const userId = users.length;
-        const newUser: User = {
-            id: String(userId + 1),
-            name: `New${userId + 1}`
-        };
+  async findAll(): Promise<UserResponse[]> {
+    return this.userRepository.findAll();
+  }
 
-        users.push(newUser);
-        return users;
+  async createUser(user: CreateUser): Promise<User> {
+    return this.userRepository.create(user);
+  }
+
+  async findUser(id: string): Promise<User> {
+    const findUser = this.userRepository.findOne({
+      where: { id }
+    });
+    if (!findUser) {
+      console.log(`User with ID '${id}' not found`);
+      throw new NotFoundException(`User with ID '${id}' not found`);
     }
-
-    findUser(id: string): User {
-        const findUser = users.find((user) => user.id === id);
-        if (!findUser) throw new NotFoundException(`User with ID '${id}' not found`);
-        return findUser;
-    }
+    return findUser;
+  }
 }
