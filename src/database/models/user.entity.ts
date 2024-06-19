@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { UUIDV4 } from 'sequelize';
 import {
     Table,
@@ -14,20 +15,25 @@ import {
 
 @Table
 export class User extends Model {
+    @ApiProperty()
     @Default(UUIDV4())
     @PrimaryKey
     @Column(DataType.UUID)
     id!: string;
 
+    @ApiProperty()
     @Column(DataType.STRING)
     firstName!: string;
 
+    @ApiProperty()
     @Column(DataType.STRING)
     lastName!: string;
 
+    @ApiProperty()
     @Column(DataType.STRING)
     email!: string;
 
+    @ApiProperty()
     @Default('')
     @Column
     password!: string;
@@ -50,6 +56,7 @@ export class User extends Model {
     @Column
     timezone!: string;
 
+    @ApiProperty()
     @Default(false)
     @Column(DataType.BOOLEAN)
     verified!: boolean;

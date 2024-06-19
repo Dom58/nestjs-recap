@@ -1,4 +1,4 @@
-export interface User {
+export interface UserData {
   id: string;
   firstName: string;
   lastName: string;
@@ -17,9 +17,9 @@ export interface User {
   emailTwoFactorEnabled?: boolean;
   emailTwoFactorSecret?: string | null;
 }
-export type UserResponse = Partial<Omit<User, 'password'>>;
+export type UserResponse = Partial<Omit<UserData, 'password'>>;
 
 export type CreateUser = Omit<
-  User,
+  UserData,
   'id' | 'verified' | 'profileId' | 'provider' | 'companies' | 'appTwoFactorSecret' | 'emailTwoFactorSecret' | 'appTwoFactorEnabled' | 'emailTwoFactorEnabled'
 >;
